@@ -1,25 +1,61 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { Component } from "react"
+import Counters from "./component/counters"
+import Nevbar from "./component/nevbar";
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+class App extends Component {
+  state = {
+    counters: [
+      { id: 1, value: 0 },
+      { id: 2, value: 0 },
+      { id: 3, value: 0 },
+      { id: 4, value: 0 },
+      { id: 5, value: 0 },
+    ],
+  };
+  
+  handleDelete = (count) => {
+    const counters = this.state.counters.filter((c) => {
+      console.log(
+        c.id,
+  
+        count
+      );
+      return c.id !== count;
+    });
+    this.setState({ counters });
+  };
+  handleReset = () => {
+    const counters = this.state.counters.map((c) => {
+      
+      c.value =0;
+  
+      return c;
+    });
+    this.setState({ counters });
+  };
+  handlerEvent = (counter) => {
+    const counters = [...this.state.counters];
+    const index = counters.indexOf(counter);
+    counter[index]={...counter};
+    counters[index].value++;
+    this.setState({ counters });
+  };
+  render() { 
+    return (
+    
+      <div>
+       <Nevbar
+       totalCounters={this.state.counters.filter(c=>c.value>0).length}
+       />
+       <Counters 
+       onIncrement={this.handlerEvent}
+       onDelete={this.handleDelete}
+       onReset={this.handleReset}
+       counter={this.state.counters}
+       />
+      </div>
+    );
+  }
 }
-
+ 
 export default App;
